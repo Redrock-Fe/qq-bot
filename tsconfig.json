@@ -1,0 +1,33 @@
+{
+  "references": [
+    {
+      "path": "./packages/core"
+    },
+    {
+      "path": "./packages/common"
+    },
+    {
+      "path": "./packages/plugins"
+    }
+  ],
+  "files": [],
+  "compilerOptions": {
+    "target": "es2020",
+    "module": "esnext",
+    "lib": ["esnext"],
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "resolveJsonModule": true,
+    "noUnusedLocals": true,
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@redrock-qq-bot/core": ["./packages/core/src"],
+      "@redrock-qq-bot/common": ["./packages/common/src"],
+      "@redrock-qq-bot/plugins": ["./packages/plugins/src"]
+    }
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "name": "@redrock-qq-bot/common",
+  "version": "1.0.0",
+  "description": "Here is the common module for redrock-qq-bot",
+  "keywords": [],
+  "license": "MIT",
+  "author": "Nirvana",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "unbuild",
+    "dev": "unbuild --stub",
+    "lint": "eslint .",
+    "prepublishOnly": "nr build",
+    "release": "pnpm build && pnpm publish --no-git-checks --access=public",
+    "start": "esno src/index.ts",
+    "test": "vitest",
+    "typecheck": "tsc --noEmit"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./dist/*",
+        "./dist/index.d.ts"
+      ]
+    }
+  },
+  "dependencies": {
+    "axios": "^0.26.1",
+    "axios-retry": "^3.3.1",
+    "dayjs": "^1.11.5",
+    "kolorist": "^1.6.0",
+    "picocolors": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/axios": "^0.14.0",
+    "vite": "^3.1.4"
+  }
+}

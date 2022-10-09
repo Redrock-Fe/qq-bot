@@ -1,0 +1,37 @@
+{
+  "name": "@redrock-qq-bot/core",
+  "version": "1.0.0",
+  "description": "Here is a qqBot core based on oicq",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "unbuild",
+    "dev": "unbuild --stub",
+    "lint": "eslint .",
+    "test": "vitest",
+    "start": "esno src/index.ts",
+    "release": "pnpm build && pnpm publish --no-git-checks --access=public"
+  },
+  "keywords": [
+    "qq-bot",
+    "oicq"
+  ],
+  "author": "Redrock-FE",
+  "license": "MIT",
+  "exports": {
+    ".": {
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@redrock-qq-bot/common": "workspace: *",
+    "@redrock-qq-bot/plugins": "workspace: *",
+    "oicq": "^2.3.1"
+  }
+}
