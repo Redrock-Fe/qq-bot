@@ -1,13 +1,14 @@
 {
   "name": "@redrock-qq-bot/common",
-  "version": "1.0.0",
+  "version": "0.1.1",
   "description": "Here is the common module for redrock-qq-bot",
   "keywords": [],
   "license": "MIT",
-  "author": "Nirvana",
+  "author": "NirvanaJie",
   "sideEffects": false,
   "exports": {
     ".": {
+      "require": "./dist/index.cjs",
       "import": "./dist/index.mjs",
       "types": "./dist/index.d.ts"
     }
@@ -22,7 +23,6 @@
     "build": "unbuild",
     "dev": "unbuild --stub",
     "lint": "eslint .",
-    "prepublishOnly": "nr build",
     "release": "pnpm build && pnpm publish --no-git-checks --access=public",
     "start": "esno src/index.ts",
     "test": "vitest",

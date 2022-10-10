@@ -1,8 +1,8 @@
-import type {Config} from 'oicq';
+import type {Config, EventMap} from 'oicq';
 import {createClient} from 'oicq';
 import {Helper} from './Helper';
 import type {Plugin} from './types';
-const pkg = require('../package.json');
+import pkg from '../package.json';
 import { getNowTime } from '@redrock-qq-bot/common'
 
 export function createBot(
@@ -43,8 +43,10 @@ export function createBot(
     helpers.forEach((helper) => {
       helper.plugins.push(plugin as unknown as Plugin);
     })
-   
   }
+  function on(event:keyof EventMap<any>,listener:any) {
+    return client.on(event,listener);
+}
   client.on('system.online', () => {
     helpers.forEach((helper) => {
       helper.plugins.forEach(plugin => plugin.init(helper, plugin.config));
@@ -53,5 +55,6 @@ export function createBot(
   });
   return {
     use,
+    on
   };
 }

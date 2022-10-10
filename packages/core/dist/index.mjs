@@ -46,7 +46,56 @@ class Helper {
   }
 }
 
-const pkg = require("../package.json");
+const name = "@redrock-qq-bot/core";
+const version = "0.1.1";
+const description = "Here is a qqBot core based on oicq";
+const main = "./dist/index.cjs";
+const module = "./dist/index.mjs";
+const types = "./dist/index.d.ts";
+const scripts = {
+	build: "unbuild",
+	dev: "unbuild --stub",
+	lint: "eslint .",
+	test: "vitest",
+	start: "esno src/index.ts",
+	release: "pnpm build && pnpm publish --no-git-checks --access=public"
+};
+const keywords = [
+	"qq-bot",
+	"oicq"
+];
+const author = "Redrock-FE";
+const license = "MIT";
+const exports = {
+	".": {
+		require: "./dist/index.cjs",
+		"import": "./dist/index.mjs",
+		types: "./dist/index.d.ts"
+	}
+};
+const files = [
+	"dist"
+];
+const dependencies = {
+	"@redrock-qq-bot/common": "workspace: *",
+	oicq: "^2.3.1"
+};
+const pkg = {
+	name: name,
+	version: version,
+	description: description,
+	main: main,
+	module: module,
+	types: types,
+	scripts: scripts,
+	keywords: keywords,
+	author: author,
+	license: license,
+	exports: exports,
+	files: files,
+	dependencies: dependencies
+};
+
 function createBot(account, password, groupIDs, config) {
   const client = createClient(account, config);
   client.on("system.login.slider", () => {
