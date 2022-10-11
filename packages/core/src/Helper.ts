@@ -37,8 +37,12 @@ export class Helper {
     }
     
   }
-  deleteMember(duration: number) {
-
+  deleteMember(uid: number) {
+     if(this.groupID){
+      return this.client.setGroupKick(this.groupID, uid);
+     }else{
+      warn('Your qq bot is not connected with any group')
+     }
   }
 
   addEventListener<T extends keyof EventMap>(

@@ -1,4 +1,4 @@
-import type {Config, EventMap} from 'oicq';
+import type {Client, Config, EventMap} from 'oicq';
 import {createClient} from 'oicq';
 import {Helper} from './Helper';
 import type {Plugin} from './types';
@@ -44,7 +44,7 @@ export function createBot(
       helper.plugins.push(plugin as unknown as Plugin);
     })
   }
-  function on(event:keyof EventMap<any>,listener:any) {
+  function on<T extends keyof EventMap>(event:T,listener: EventMap<Client>[T]) {
     return client.on(event,listener);
 }
   client.on('system.online', () => {

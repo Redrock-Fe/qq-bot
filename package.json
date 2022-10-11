@@ -10,11 +10,30 @@
     "log": "pm2 logs bot",
     "stop": "pm2 stop bot",
     "test": "nodemon ",
+    "prepare": "husky install",
+    "lint": "eslint --cache .",
+    "lint-staged": "lint-staged",
     "build": "pnpm -r --filter='./packages/*' run build"
   },
   "keywords": [],
   "author": "Redrock-FE",
   "license": "MIT",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*": [
+      "prettier --write --cache --ignore-unknown"
+    ],
+    "packages/*/{src,types}/**/*.ts": [
+      "eslint --cache --fix"
+    ],
+    "packages/**/*.d.ts": [
+      "eslint --cache --fix"
+    ]
+  },
   "devDependencies": {
     "@types/node": "^18.7.23",
     "eslint": "^8.24.0",

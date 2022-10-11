@@ -1,11 +1,16 @@
 {
   "name": "@redrock-qq-bot/plugins",
-  "keywords": [],
+  "keywords": [
+    "qq-bot",
+    "redrock",
+    "plugins"
+  ],
   "license": "MIT",
-  "author": "Nirvana",
+  "author": "NirvanaJie",
   "sideEffects": false,
   "exports": {
     ".": {
+      "require": "./dist/index.cjs",
       "import": "./dist/index.mjs",
       "types": "./dist/index.d.ts"
     }
