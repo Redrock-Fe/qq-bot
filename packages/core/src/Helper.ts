@@ -1,10 +1,10 @@
-import type {Client, EventMap, GroupMessageEvent, Sendable} from 'oicq';
-import type {Plugin} from './types';
-import {logger} from '@redrock-qq-bot/common'
+import type { Client, EventMap, GroupMessageEvent, Sendable } from 'oicq';
+import type { Plugin } from './types';
+import { logger } from '@redrock-qq-bot/common';
 
 type GroupMessageListener = (event: GroupMessageEvent) => void;
 
-const {warn} = logger;
+const { warn } = logger;
 
 export class Helper {
   readonly client: Client;
@@ -16,10 +16,10 @@ export class Helper {
     this.plugins = [];
   }
   sendMsg(msg: Sendable) {
-    if(this.groupID){
-        return this.client.sendGroupMsg(this.groupID!, msg);
-    }else{
-        warn('Your qq bot is not connected with any group')
+    if (this.groupID) {
+      return this.client.sendGroupMsg(this.groupID, msg);
+    } else {
+      warn('Your qq bot is not connected with any group');
     }
   }
   sendPrivateMsg(receiverID: number, msg: Sendable) {
@@ -30,19 +30,18 @@ export class Helper {
   }
 
   banMember(userId: number, duration: number) {
-    if(this.groupID){
-        return this.client.setGroupBan(this.groupID!, userId, duration);
-    }else{
-      warn('Your qq bot is not connected with any group')
+    if (this.groupID) {
+      return this.client.setGroupBan(this.groupID, userId, duration);
+    } else {
+      warn('Your qq bot is not connected with any group');
     }
-    
   }
   deleteMember(uid: number) {
-     if(this.groupID){
+    if (this.groupID) {
       return this.client.setGroupKick(this.groupID, uid);
-     }else{
-      warn('Your qq bot is not connected with any group')
-     }
+    } else {
+      warn('Your qq bot is not connected with any group');
+    }
   }
 
   addEventListener<T extends keyof EventMap>(
@@ -51,7 +50,7 @@ export class Helper {
   ) {
     if (event === 'message.group') {
       const callback = (data: GroupMessageEvent) => {
-        const {group_id} = data;
+        const { group_id } = data;
         if (group_id === this.groupID) {
           (listener as GroupMessageListener)(data);
         }
@@ -63,4 +62,3 @@ export class Helper {
     return () => this.client.removeListener(event, listener);
   }
 }
-
