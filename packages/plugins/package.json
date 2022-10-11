@@ -1,12 +1,13 @@
 {
   "name": "@redrock-qq-bot/plugins",
+  "version": "0.1.0",
   "keywords": [
     "qq-bot",
     "redrock",
     "plugins"
   ],
   "license": "MIT",
-  "author": "NirvanaJie",
+  "author": "Redrock-FE",
   "sideEffects": false,
   "exports": {
     ".": {
