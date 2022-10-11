@@ -1,5 +1,5 @@
-import { logger, getNowTime } from '@redrock-qq-bot/common';
-import { createClient } from 'oicq';
+import { logger, getNowTime } from "@redrock-qq-bot/common";
+import { createClient } from "oicq";
 
 const { warn } = logger;
 class Helper {
@@ -28,7 +28,12 @@ class Helper {
       warn("Your qq bot is not connected with any group");
     }
   }
-  deleteMember(duration) {
+  deleteMember(uid) {
+    if (this.groupID) {
+      return this.client.setGroupKick(this.groupID, uid);
+    } else {
+      warn("Your qq bot is not connected with any group");
+    }
   }
   addEventListener(event, listener) {
     if (event === "message.group") {
@@ -53,47 +58,42 @@ const main = "./dist/index.cjs";
 const module = "./dist/index.mjs";
 const types = "./dist/index.d.ts";
 const scripts = {
-	build: "unbuild",
-	dev: "unbuild --stub",
-	lint: "eslint .",
-	test: "vitest",
-	start: "esno src/index.ts",
-	release: "pnpm build && pnpm publish --no-git-checks --access=public"
+  build: "unbuild",
+  dev: "unbuild --stub",
+  lint: "eslint .",
+  test: "vitest",
+  start: "esno src/index.ts",
+  release: "pnpm build && pnpm publish --no-git-checks --access=public",
 };
-const keywords = [
-	"qq-bot",
-	"oicq"
-];
+const keywords = ["qq-bot", "oicq"];
 const author = "Redrock-FE";
 const license = "MIT";
 const exports = {
-	".": {
-		require: "./dist/index.cjs",
-		"import": "./dist/index.mjs",
-		types: "./dist/index.d.ts"
-	}
+  ".": {
+    require: "./dist/index.cjs",
+    import: "./dist/index.mjs",
+    types: "./dist/index.d.ts",
+  },
 };
-const files = [
-	"dist"
-];
+const files = ["dist"];
 const dependencies = {
-	"@redrock-qq-bot/common": "workspace: *",
-	oicq: "^2.3.1"
+  "@redrock-qq-bot/common": "workspace: *",
+  oicq: "^2.3.1",
 };
 const pkg = {
-	name: name,
-	version: version,
-	description: description,
-	main: main,
-	module: module,
-	types: types,
-	scripts: scripts,
-	keywords: keywords,
-	author: author,
-	license: license,
-	exports: exports,
-	files: files,
-	dependencies: dependencies
+  name: name,
+  version: version,
+  description: description,
+  main: main,
+  module: module,
+  types: types,
+  scripts: scripts,
+  keywords: keywords,
+  author: author,
+  license: license,
+  exports: exports,
+  files: files,
+  dependencies: dependencies,
 };
 
 function createBot(account, password, groupIDs, config) {
@@ -104,7 +104,9 @@ function createBot(account, password, groupIDs, config) {
     });
   });
   client.on("system.login.device", () => {
-    client.logger.info("\u9A8C\u8BC1\u5B8C\u6210\u540E\u6572\u51FBEnter\u7EE7\u7EED..");
+    client.logger.info(
+      "\u9A8C\u8BC1\u5B8C\u6210\u540E\u6572\u51FBEnter\u7EE7\u7EED.."
+    );
     process.stdin.once("data", () => {
       client.login();
     });
@@ -116,20 +118,27 @@ function createBot(account, password, groupIDs, config) {
     helpers.push(helper);
   });
   function use(plugin, config2) {
-    if (config2)
-      plugin.config = config2;
+    if (config2) plugin.config = config2;
     helpers.forEach((helper) => {
       helper.plugins.push(plugin);
     });
   }
+  function on(event, listener) {
+    return client.on(event, listener);
+  }
   client.on("system.online", () => {
     helpers.forEach((helper) => {
       helper.plugins.forEach((plugin) => plugin.init(helper, plugin.config));
-      helper.sendMsg(`bot \u542F\u52A8\u6210\u529F\uFF0C\u5F53\u524D\u7248\u672C ${pkg.version}\uFF0C\u5F53\u524D\u65F6\u95F4 ${getNowTime()}`);
+      helper.sendMsg(
+        `bot \u542F\u52A8\u6210\u529F\uFF0C\u5F53\u524D\u7248\u672C ${
+          pkg.version
+        }\uFF0C\u5F53\u524D\u65F6\u95F4 ${getNowTime()}`
+      );
     });
   });
   return {
-    use
+    use,
+    on,
   };
 }
 
