@@ -9,9 +9,7 @@
     "list": "pm2 list",
     "log": "pm2 logs bot",
     "stop": "pm2 stop bot",
-    "test": "nodemon ",
     "prepare": "husky install",
-    "lint": "eslint --cache .",
     "lint-staged": "lint-staged",
     "build": "pnpm -r --filter='./packages/*' run build"
   },
