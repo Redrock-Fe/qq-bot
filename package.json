@@ -11,7 +11,8 @@
     "stop": "pm2 stop bot",
     "prepare": "husky install && husky add .husky/pre-commit",
     "lint-staged": "lint-staged",
-    "build": "pnpm -r --filter='./packages/*' run build"
+    "build": "pnpm -r --filter='./packages/*' run build",
+    "test": "vitest"
   },
   "keywords": [
     "Redrock-FE",
