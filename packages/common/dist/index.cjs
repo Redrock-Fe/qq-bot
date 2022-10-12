@@ -1,29 +1,40 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', { value: true });
+Object.defineProperty(exports, "__esModule", { value: true });
 
-const dayjs = require('dayjs');
-const kolorist = require('kolorist');
-const axios = require('axios');
-const axiosRetry = require('axios-retry');
+const dayjs = require("dayjs");
+const kolorist = require("kolorist");
+const axios = require("axios");
+const axiosRetry = require("axios-retry");
 
-function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e["default"] : e; }
+function _interopDefaultLegacy(e) {
+  return e && typeof e === "object" && "default" in e ? e["default"] : e;
+}
 
-const dayjs__default = /*#__PURE__*/_interopDefaultLegacy(dayjs);
-const axios__default = /*#__PURE__*/_interopDefaultLegacy(axios);
-const axiosRetry__default = /*#__PURE__*/_interopDefaultLegacy(axiosRetry);
+const dayjs__default = /*#__PURE__*/ _interopDefaultLegacy(dayjs);
+const axios__default = /*#__PURE__*/ _interopDefaultLegacy(axios);
+const axiosRetry__default = /*#__PURE__*/ _interopDefaultLegacy(axiosRetry);
 
 const getToday = () => dayjs__default().format("YYYY-MM-DD");
 const getNowTime = () => dayjs__default().format("YYYY-MM-DD HH:mm:ss");
 
 const LogOut = (type, msg) => {
-  const tag = type === "info" ? kolorist.cyan(type) : type === "warn" ? kolorist.yellow(type) : kolorist.red(type);
-  console.log(`${kolorist.lightGreen(new Date().toLocaleTimeString())} ${tag} ${kolorist.cyan(msg)}`);
+  const tag =
+    type === "info"
+      ? kolorist.cyan(type)
+      : type === "warn"
+      ? kolorist.yellow(type)
+      : kolorist.red(type);
+  console.log(
+    `${kolorist.lightGreen(
+      new Date().toLocaleTimeString()
+    )} ${tag} ${kolorist.cyan(msg)}`
+  );
 };
 const logger = {
   info: (msg) => LogOut("info", msg),
   warn: (msg) => LogOut("warn", msg),
-  error: (msg) => LogOut("error", msg)
+  error: (msg) => LogOut("error", msg),
 };
 
 class Request {
@@ -55,7 +66,7 @@ class Request {
     if (config.retry) {
       axiosRetry__default(this.instance, {
         retries: config.retryTimes ?? 3,
-        retryDelay: axiosRetry__default.exponentialDelay
+        retryDelay: axiosRetry__default.exponentialDelay,
       });
     }
   }
@@ -67,9 +78,7 @@ class Request {
       const { baseURL, url, method } = errorConfig;
       throw new Error(
         `[${method ? method : "REQUEST"} ${baseURL}${url}] ${code} ${message}
-${JSON.stringify(
-          errorConfig
-        )}`
+${JSON.stringify(errorConfig)}`
       );
     }
   }
@@ -87,7 +96,30 @@ ${JSON.stringify(
   }
 }
 
+function checkTime(day, time) {
+  if (day === "") {
+    const timeArr = time.split(":");
+    return {
+      h: parseInt(timeArr[0]),
+      m: parseInt(timeArr[1]),
+      s: parseInt(timeArr[2]),
+    };
+  } else {
+    const dayArr = day.split("-");
+    const timeArr = time.split(":");
+    return {
+      Y: parseInt(dayArr[0]),
+      M: parseInt(dayArr[1]),
+      D: parseInt(dayArr[2]),
+      h: parseInt(timeArr[0]),
+      m: parseInt(timeArr[1]),
+      s: parseInt(timeArr[2]),
+    };
+  }
+}
+
 exports.Request = Request;
+exports.checkTime = checkTime;
 exports.getNowTime = getNowTime;
 exports.getToday = getToday;
 exports.logger = logger;

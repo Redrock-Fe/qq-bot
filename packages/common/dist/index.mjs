@@ -1,19 +1,22 @@
-import dayjs from 'dayjs';
-import { cyan, yellow, red, lightGreen } from 'kolorist';
-import axios from 'axios';
-import axiosRetry from 'axios-retry';
+import dayjs from "dayjs";
+import { cyan, yellow, red, lightGreen } from "kolorist";
+import axios from "axios";
+import axiosRetry from "axios-retry";
 
 const getToday = () => dayjs().format("YYYY-MM-DD");
 const getNowTime = () => dayjs().format("YYYY-MM-DD HH:mm:ss");
 
 const LogOut = (type, msg) => {
-  const tag = type === "info" ? cyan(type) : type === "warn" ? yellow(type) : red(type);
-  console.log(`${lightGreen(new Date().toLocaleTimeString())} ${tag} ${cyan(msg)}`);
+  const tag =
+    type === "info" ? cyan(type) : type === "warn" ? yellow(type) : red(type);
+  console.log(
+    `${lightGreen(new Date().toLocaleTimeString())} ${tag} ${cyan(msg)}`
+  );
 };
 const logger = {
   info: (msg) => LogOut("info", msg),
   warn: (msg) => LogOut("warn", msg),
-  error: (msg) => LogOut("error", msg)
+  error: (msg) => LogOut("error", msg),
 };
 
 class Request {
@@ -45,7 +48,7 @@ class Request {
     if (config.retry) {
       axiosRetry(this.instance, {
         retries: config.retryTimes ?? 3,
-        retryDelay: axiosRetry.exponentialDelay
+        retryDelay: axiosRetry.exponentialDelay,
       });
     }
   }
@@ -57,9 +60,7 @@ class Request {
       const { baseURL, url, method } = errorConfig;
       throw new Error(
         `[${method ? method : "REQUEST"} ${baseURL}${url}] ${code} ${message}
-${JSON.stringify(
-          errorConfig
-        )}`
+${JSON.stringify(errorConfig)}`
       );
     }
   }
@@ -77,4 +78,26 @@ ${JSON.stringify(
   }
 }
 
-export { Request, getNowTime, getToday, logger };
+function checkTime(day, time) {
+  if (day === "") {
+    const timeArr = time.split(":");
+    return {
+      h: parseInt(timeArr[0]),
+      m: parseInt(timeArr[1]),
+      s: parseInt(timeArr[2]),
+    };
+  } else {
+    const dayArr = day.split("-");
+    const timeArr = time.split(":");
+    return {
+      Y: parseInt(dayArr[0]),
+      M: parseInt(dayArr[1]),
+      D: parseInt(dayArr[2]),
+      h: parseInt(timeArr[0]),
+      m: parseInt(timeArr[1]),
+      s: parseInt(timeArr[2]),
+    };
+  }
+}
+
+export { Request, checkTime, getNowTime, getToday, logger };
