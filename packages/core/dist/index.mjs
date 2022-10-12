@@ -52,7 +52,7 @@ class Helper {
 }
 
 const name = "@redrock-qq-bot/core";
-const version = "0.1.1";
+const version = "0.1.2";
 const description = "Here is a qqBot core based on oicq";
 const main = "./dist/index.cjs";
 const module = "./dist/index.mjs";

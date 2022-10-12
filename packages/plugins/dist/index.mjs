@@ -34,7 +34,7 @@ function talk(data, helper) {
     }
   }
 }
-const init$2 = (helper, _config) => {
+const init$3 = (helper, _config) => {
   config = _config;
   helper.addEventListener("message.group", (data) => {
     const { group_id } = data;
@@ -45,7 +45,7 @@ const init$2 = (helper, _config) => {
 };
 const Greet = {
   name: "\u5BF9\u8BDD\u4EA4\u4E92",
-  init: init$2
+  init: init$3
 };
 
 var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
@@ -7254,10 +7254,10 @@ const setup = (config) => {
   });
 };
 
-const init$1 = () => {
+const init$2 = () => {
   setup();
 };
-init$1();
+init$2();
 
 configuration$2.addListener((config) => {
   configuration$2.throwExceptionIf(
@@ -7284,7 +7284,7 @@ configuration$2.addListener((config) => {
 configuration$2.addListener(setup);
 
 appenders$2.exports = appenders$1;
-appenders$2.exports.init = init$1;
+appenders$2.exports.init = init$2;
 
 var categories$2 = {exports: {}};
 
@@ -57039,7 +57039,7 @@ function groupReply(data, helper) {
     ifReply = false;
   }
 }
-const init = (helper, _config) => {
+const init$1 = (helper, _config) => {
   configs = _config;
   defKey = configs ? configs.pop() : void 0;
   helper.addEventListener("message.group", (data) => {
@@ -57051,7 +57051,41 @@ const init = (helper, _config) => {
 };
 const GroupReply = {
   name: "\u5173\u952E\u5B57\u56DE\u590D",
+  init: init$1
+};
+
+let recentMessages = [];
+const canRepeatTimes = 5;
+const banTimeLimit = 5;
+function banForRepeat(helper) {
+  recentMessages = recentMessages.map((e) => {
+    if (e.raw_message.startsWith("[CQ:")) {
+      e.raw_message = e.raw_message.split(",")[1];
+    }
+    return e;
+  });
+  const raw = recentMessages[0].raw_message;
+  if (recentMessages.every((e) => e.raw_message === raw)) {
+    const banTime = Math.ceil(Math.random() * banTimeLimit) * 60;
+    helper.banMember(
+      recentMessages[recentMessages.length - 1].sender.user_id,
+      banTime
+    );
+  }
+}
+function listener(data, helper) {
+  recentMessages.push(data);
+  if (recentMessages.length > canRepeatTimes) {
+    recentMessages.shift();
+    banForRepeat(helper);
+  }
+}
+const init = (helper) => {
+  helper.addEventListener("message.group", (data) => listener(data, helper));
+};
+const BanForRepeat = {
+  name: "\u590D\u8BFB\u7981\u8A00",
   init
 };
 
-export { Greet, GroupReply };
+export { BanForRepeat, Greet, GroupReply };

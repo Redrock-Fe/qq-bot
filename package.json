@@ -9,11 +9,14 @@
     "list": "pm2 list",
     "log": "pm2 logs bot",
     "stop": "pm2 stop bot",
-    "prepare": "husky install",
+    "prepare": "husky install && husky add .husky/pre-commit",
     "lint-staged": "lint-staged",
     "build": "pnpm -r --filter='./packages/*' run build"
   },
-  "keywords": [],
+  "keywords": [
+    "Redrock-FE",
+    "qq-bot"
+  ],
   "author": "Redrock-FE",
   "license": "MIT",
   "husky": {
@@ -34,7 +37,11 @@
   },
   "devDependencies": {
     "@types/node": "^18.7.23",
+    "@typescript-eslint/eslint-plugin": "^5.40.0",
+    "@typescript-eslint/parser": "^5.40.0",
     "eslint": "^8.24.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
     "esno": "^0.16.3",
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3",

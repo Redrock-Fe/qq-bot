@@ -1,4 +1,4 @@
-# Redrock-QQ-Bot
+# @redrock-qq-bot/core
 
 A QQ Chat Bot
 
