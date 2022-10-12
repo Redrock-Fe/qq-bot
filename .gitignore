@@ -9,4 +9,5 @@ tests
 **/lib/**/*.d.ts
 **/lib/**/*.js
 dist
+.eslintcache
 

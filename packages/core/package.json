@@ -1,6 +1,6 @@
 {
   "name": "@redrock-qq-bot/core",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Here is a qqBot core based on oicq",
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
