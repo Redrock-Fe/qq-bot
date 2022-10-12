@@ -1,14 +1,16 @@
-let config;
+import { checkTime } from "@redrock-qq-bot/common";
+
+let config$1;
 function talk(data, helper) {
   const {
     raw_message,
     sender: { user_id },
   } = data;
   if (/\S*机器人\S*/.test(raw_message)) {
-    if (config && Object.keys(config.reply).includes(String(user_id))) {
+    if (config$1 && Object.keys(config$1.reply).includes(String(user_id))) {
       helper.sendMsg(
-        config.reply[user_id][
-          Math.floor(Math.random() * config.reply[user_id].length)
+        config$1.reply[user_id][
+          Math.floor(Math.random() * config$1.reply[user_id].length)
         ]
       );
     } else {
@@ -16,8 +18,8 @@ function talk(data, helper) {
     }
   }
 }
-const init$1 = (helper, _config) => {
-  config = _config;
+const init$2 = (helper, _config) => {
+  config$1 = _config;
   helper.addEventListener("message.group", (data) => {
     const { group_id } = data;
     if (group_id !== helper.groupID) return;
@@ -26,7 +28,7 @@ const init$1 = (helper, _config) => {
 };
 const Greet = {
   name: "\u5BF9\u8BDD\u4EA4\u4E92",
-  init: init$1,
+  init: init$2,
 };
 
 let recentMessages = [];
@@ -55,12 +57,50 @@ function listener(data, helper) {
     banForRepeat(helper);
   }
 }
-const init = (helper) => {
+const init$1 = (helper) => {
   helper.addEventListener("message.group", (data) => listener(data, helper));
 };
 const BanForRepeat = {
   name: "\u590D\u8BFB\u7981\u8A00",
-  init,
+  init: init$1,
 };
 
-export { BanForRepeat, Greet };
+function timeoutMsg(data, helper) {
+  const { day, time, message, group_id } = data;
+  if (day !== "") {
+    const { Y, D, M, h, m, s } = checkTime(day, time);
+    setInterval(() => {
+      const t = new Date();
+      if (
+        t.getFullYear() === Y &&
+        t.getMonth() + 1 === M &&
+        t.getDate() === D &&
+        t.getHours() === h &&
+        t.getMinutes() === m &&
+        t.getSeconds() === s
+      ) {
+        helper.client.sendGroupMsg(group_id, message);
+      }
+    }, 1e3);
+  } else {
+    setInterval(() => {
+      const t = new Date();
+      const { h, m, s } = checkTime(day, time);
+      if (t.getHours() === h && t.getMinutes() === m && t.getSeconds() === s) {
+        helper.client.sendGroupMsg(group_id, message);
+      }
+    }, 1e3);
+  }
+}
+let config;
+const init = (helper, _config) => {
+  config = _config;
+  timeoutMsg(_config, helper);
+};
+const TimerMsg = {
+  name: "\u5B9A\u65F6\u6D88\u606F",
+  init,
+  config,
+};
+
+export { BanForRepeat, Greet, TimerMsg };
