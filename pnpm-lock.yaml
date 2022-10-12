@@ -55,11 +55,9 @@ importers:
   packages/core:
     specifiers:
       '@redrock-qq-bot/common': 'workspace: *'
-      '@redrock-qq-bot/plugins': 'workspace: *'
       oicq: ^2.3.1
     dependencies:
       '@redrock-qq-bot/common': link:../common
-      '@redrock-qq-bot/plugins': link:../plugins
       oicq: 2.3.1
 
   packages/plugins:

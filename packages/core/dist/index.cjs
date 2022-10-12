@@ -32,7 +32,12 @@ class Helper {
       warn("Your qq bot is not connected with any group");
     }
   }
-  deleteMember(duration) {
+  deleteMember(uid) {
+    if (this.groupID) {
+      return this.client.setGroupKick(this.groupID, uid);
+    } else {
+      warn("Your qq bot is not connected with any group");
+    }
   }
   addEventListener(event, listener) {
     if (event === "message.group") {
@@ -100,7 +105,7 @@ const pkg = {
 	dependencies: dependencies
 };
 
-function createBot(account, password, groupIDs, config) {
+function createBot(botName, account, password, groupIDs, helloWords, config) {
   const client = oicq.createClient(account, config);
   client.on("system.login.slider", () => {
     process.stdin.once("data", (input) => {
@@ -126,14 +131,22 @@ function createBot(account, password, groupIDs, config) {
       helper.plugins.push(plugin);
     });
   }
+  function on(event, listener) {
+    return client.on(event, listener);
+  }
   client.on("system.online", () => {
     helpers.forEach((helper) => {
       helper.plugins.forEach((plugin) => plugin.init(helper, plugin.config));
-      helper.sendMsg(`bot \u542F\u52A8\u6210\u529F\uFF0C\u5F53\u524D\u7248\u672C ${pkg.version}\uFF0C\u5F53\u524D\u65F6\u95F4 ${common.getNowTime()}`);
+      if (helloWords) {
+        helper.sendMsg(helloWords);
+      } else {
+        helper.sendMsg(`${botName}\u4E0A\u7EBF\u4E86\u54E6\uFF0C\u5F53\u524D\u7248\u672C ${pkg.version}\uFF0C\u5F53\u524D\u65F6\u95F4 ${common.getNowTime()}`);
+      }
     });
   });
   return {
-    use
+    use,
+    on
   };
 }
 

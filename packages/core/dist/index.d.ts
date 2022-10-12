@@ -17,12 +17,13 @@ declare class Helper {
     sendPrivateMsg(receiverID: number, msg: Sendable): Promise<oicq.MessageRet>;
     deleteMsg(msgID: string): Promise<boolean>;
     banMember(userId: number, duration: number): Promise<void> | undefined;
-    deleteMember(duration: number): void;
+    deleteMember(uid: number): Promise<boolean> | undefined;
     addEventListener<T extends keyof EventMap>(event: T, listener: EventMap<Client>[T]): () => Client;
 }
 
-declare function createBot(account: number, password: string, groupIDs: number[], config?: Config): {
+declare function createBot(botName: string, account: number, password: string, groupIDs: number[], helloWords: string, config?: Config): {
     use: <T, MustNeedConfig extends boolean>(plugin: Plugin<T, MustNeedConfig>, config?: T | undefined) => void;
+    on: <T_1 extends keyof EventMap<any>>(event: T_1, listener: EventMap<Client>[T_1]) => Client;
 };
 
 export { Helper, Plugin, createBot, initFn };

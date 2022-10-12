@@ -1,15 +1,17 @@
-import type {Client, Config, EventMap} from 'oicq';
-import {createClient} from 'oicq';
-import {Helper} from './Helper';
-import type {Plugin} from './types';
+import type { Client, Config, EventMap } from 'oicq';
+import { createClient } from 'oicq';
+import { Helper } from './Helper';
+import type { Plugin } from './types';
 import pkg from '../package.json';
 import { getNowTime } from '@redrock-qq-bot/common'
 
 export function createBot(
+  botName: string,
   account: number,
   password: string,
   groupIDs: number[],
-  config?: Config
+  helloWords: string,
+  config?: Config,
 ) {
   const client = createClient(account, config);
   //监听并输入滑动验证码ticket(同一设备只需验证一次)
@@ -29,10 +31,10 @@ export function createBot(
 
   client.login(password);
   //创建消息和插件助手
-  const helpers:Helper[] = [] 
+  const helpers: Helper[] = []
   groupIDs.forEach((groupID) => {
-      const helper = new Helper(client, groupID);
-      helpers.push(helper);
+    const helper = new Helper(client, groupID);
+    helpers.push(helper);
   })
   //使用插件
   function use<T, MustNeedConfig extends boolean>(
@@ -44,13 +46,17 @@ export function createBot(
       helper.plugins.push(plugin as unknown as Plugin);
     })
   }
-  function on<T extends keyof EventMap>(event:T,listener: EventMap<Client>[T]) {
-    return client.on(event,listener);
-}
+  function on<T extends keyof EventMap>(event: T, listener: EventMap<Client>[T]) {
+    return client.on(event, listener);
+  }
   client.on('system.online', () => {
     helpers.forEach((helper) => {
       helper.plugins.forEach(plugin => plugin.init(helper, plugin.config));
-      helper.sendMsg(`bot 启动成功，当前版本 ${pkg.version}，当前时间 ${getNowTime()}`);
+      if (helloWords) {
+        helper.sendMsg(helloWords)
+      } else {
+        helper.sendMsg(`${botName}上线了哦，当前版本 ${pkg.version}，当前时间 ${getNowTime()}`);
+      }
     })
   });
   return {
