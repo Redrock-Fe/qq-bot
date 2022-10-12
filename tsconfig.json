@@ -29,5 +29,10 @@
       "@redrock-qq-bot/common": ["./packages/common/src"],
       "@redrock-qq-bot/plugins": ["./packages/plugins/src"]
     }
+  },
+  "ts-node": {
+    "compilerOptions": {
+      "module": "CommonJS"
+    }
   }
 }
