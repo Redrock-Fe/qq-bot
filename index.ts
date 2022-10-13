@@ -1,2 +1,5 @@
 import { createBot } from "./packages/core";
-console.log(createBot);
+createBot(111, "", []);
+import { TimerMsg } from "./packages/plugins/src";
+
+TimerMsg.config = {};

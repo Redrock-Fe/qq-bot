@@ -35,7 +35,7 @@ function timeoutMsg(data: Params, helper: Helper) {
   }
 }
 let config: Params | undefined;
-const init: initFn<Params, false> = (helper, _config: Params) => {
+const init: initFn<Params, false> = (helper, _config?: Params) => {
   config = _config;
   timeoutMsg(_config as Params, helper);
 };
