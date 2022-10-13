@@ -1,7 +1,6 @@
 import { Helper, initFn, Plugin } from '@redrock-qq-bot/core';
 import { checkTime } from '@redrock-qq-bot/common';
 import type { Sendable } from 'oicq';
-
 export interface parms {
   day: string;
   time: string;
