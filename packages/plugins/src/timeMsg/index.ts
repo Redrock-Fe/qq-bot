@@ -1,13 +1,13 @@
 import { Helper, initFn, Plugin } from '@redrock-qq-bot/core';
 import { checkTime } from '@redrock-qq-bot/common';
 import type { Sendable } from 'oicq';
-export interface parms {
+export interface Params {
   day: string;
   time: string;
   message: Sendable;
   group_id: number;
 }
-function timeoutMsg(data: parms, helper: Helper) {
+function timeoutMsg(data: Params, helper: Helper) {
   const { day, time, message, group_id } = data;
   if (day !== '') {
     const { Y, D, M, h, m, s } = checkTime(day, time);
@@ -35,9 +35,9 @@ function timeoutMsg(data: parms, helper: Helper) {
   }
 }
 let config;
-const init: initFn<parms, false> = (helper, _config: parms | undefined) => {
+const init: initFn<Params, false> = (helper, _config: Params | undefined) => {
   config = _config;
-  timeoutMsg(_config as parms, helper);
+  timeoutMsg(_config as Params, helper);
 };
 /**
  * @descript config 参数含义
@@ -46,7 +46,7 @@ const init: initFn<parms, false> = (helper, _config: parms | undefined) => {
  * @parms message oicq的消息类型
  * @parms gruop_id 要发送消息的群号
  */
-export const TimerMsg: Plugin<parms, true> = {
+export const TimerMsg: Plugin<Params, true> = {
   name: '定时消息',
   init,
   config,
