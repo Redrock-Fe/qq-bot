@@ -33,6 +33,7 @@
   },
   "dependencies": {
     "@redrock-qq-bot/common": "workspace: *",
-    "@redrock-qq-bot/core": "workspace: *"
+    "@redrock-qq-bot/core": "workspace: *",
+    "oicq": "^2.3.1"
   }
 }
