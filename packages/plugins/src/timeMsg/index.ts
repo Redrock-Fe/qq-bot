@@ -44,5 +44,3 @@ export const TimerMsg: Plugin<Params, true> = {
   init,
   config,
 };
-
-TimerMsg;
