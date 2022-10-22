@@ -1,12 +1,12 @@
 import { Helper, initFn, Plugin } from '@redrock-qq-bot/core';
 import type { Sendable } from 'oicq';
 export interface IKeyWord {
-  title: string;
-  reply: Sendable;
+  question: string[];
+  reply: Sendable[];
   group_id: number;
 }
 function keyWordSend(data: IKeyWord, helper: Helper) {
-  const { title, reply, group_id } = data;
+  const { question, reply, group_id } = data;
   helper.addEventListener('message.group', (msg) => {
     if (msg.atme && msg.group_id === group_id) {
       let text = '';
@@ -15,8 +15,9 @@ function keyWordSend(data: IKeyWord, helper: Helper) {
           text = item.text.trim();
         }
       });
-      if (text.includes(title)) {
-        msg.reply(reply, true);
+      const arr = question.filter((ques) => text.includes(ques));
+      if (arr.length !== 0) {
+        msg.reply(reply[question.indexOf(arr[0])], true);
       }
     }
   });
