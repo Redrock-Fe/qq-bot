@@ -10,3 +10,4 @@ tests
 **/lib/**/*.js
 dist
 .eslintcache
+
