@@ -30,7 +30,7 @@
     "dist"
   ],
   "dependencies": {
-    "@redrock-qq-bot/common": "workspace: *",
+    "@redrock-qq-bot/common": "workspace:^0.1.1",
     "oicq": "^2.3.1"
   }
 }
