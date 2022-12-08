@@ -9,7 +9,6 @@
     "list": "pm2 list",
     "log": "pm2 logs bot",
     "stop": "pm2 stop bot",
-    "prepare": "husky install && husky add .husky/pre-commit",
     "lint-staged": "lint-staged",
     "build": "pnpm -r --filter='./packages/*' run build",
     "test": "vitest"
